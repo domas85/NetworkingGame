@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Cinemachine.Utility;
+using NetcodeDemo;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -122,9 +124,17 @@ namespace StarterAssets
             }
         }
 
+        private LayerMask platformLayer;
+        Vector3 previousTransform;
+        Vector3 platformVelocity;
+        public float RayDistance = 7f;
+        public float rayHeight = 1f;
+
 
         private void Awake()
         {
+            platformLayer = LayerMask.GetMask("MovingPlatform");
+
             // get a reference to our main camera
             if (_mainCamera == null)
             {
@@ -164,6 +174,34 @@ namespace StarterAssets
         private void LateUpdate()
         {
             CameraRotation();
+        }
+
+        private void FixedUpdate()
+        {
+            
+            if (Physics.Raycast(transform.position + new Vector3(0, rayHeight, 0), transform.TransformDirection(Vector3.down), out RaycastHit platformRay, RayDistance, platformLayer))
+            {
+                if (previousTransform != Vector3.zero && previousTransform != platformRay.transform.position)
+                {
+                    platformVelocity = platformRay.transform.position - previousTransform;
+                }
+                if (previousTransform == platformRay.transform.position)
+                {
+                    platformVelocity = Vector3.zero;
+                }
+                previousTransform = platformRay.transform.position;
+
+                if (platformVelocity != null)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, transform.position + platformVelocity, platformVelocity.magnitude);
+                    //transform.position += platformVelocity;
+                }
+            }
+            else
+            {
+                platformVelocity = Vector3.zero;
+                previousTransform = Vector3.zero;
+            }
         }
 
         private void AssignAnimationIDs()
@@ -256,7 +294,7 @@ namespace StarterAssets
             if (_input.move != Vector2.zero)
             {
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                  _mainCamera.transform.eulerAngles.y;
+                                  _input.cameraAngles.y; //_mainCamera.transform.eulerAngles.y;
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                     RotationSmoothTime);
 
