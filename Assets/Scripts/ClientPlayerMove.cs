@@ -33,6 +33,7 @@ namespace NetcodeDemo
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
+
             enabled = IsClient; // Enable if this is a client.
             if (IsOwner)
             {
