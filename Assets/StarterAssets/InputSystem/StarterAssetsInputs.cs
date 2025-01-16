@@ -13,6 +13,8 @@ namespace StarterAssets
         public Vector3 cameraAngles;
         public bool jump;
         public bool sprint;
+        public bool interact;
+        public bool openChat;
 
         [Header("Movement Settings")]
         public bool analogMovement;
@@ -45,6 +47,16 @@ namespace StarterAssets
             SprintInput(value.isPressed);
         }
 
+        public void OnInteract(InputValue value)
+        {
+            IneractInput(value.isPressed);
+        }
+
+        public void OnOpenChat(InputValue value)
+        {
+            OpenChatInput(value.isPressed);
+        }
+
 #endif
 
 
@@ -66,6 +78,16 @@ namespace StarterAssets
         public void SprintInput(bool newSprintState)
         {
             sprint = newSprintState;
+        }
+
+        public void IneractInput(bool newIneractState)
+        {
+            interact = newIneractState;
+        }
+
+        public void OpenChatInput(bool newOpenChatState)
+        {
+            openChat = newOpenChatState;
         }
 
         public void CameraRotationInput(Vector3 newAngles)

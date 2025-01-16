@@ -27,7 +27,6 @@ namespace NetcodeDemo
             {
                 _mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             }
-
         }
 
         public override void OnNetworkSpawn()

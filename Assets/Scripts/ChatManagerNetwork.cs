@@ -1,11 +1,15 @@
+using StarterAssets;
 using System;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ChatManagerNetwork : NetworkBehaviour
 {
     public static ChatManagerNetwork instance;
+
+    [SerializeField] InputActionReference OpenTheChat;
 
     [SerializeField] ChatMessage chatMessagePrefab;
     [SerializeField] GameObject TextChatHUD;
@@ -18,6 +22,7 @@ public class ChatManagerNetwork : NetworkBehaviour
         if (instance == null)
         {
             instance = this;
+            OpenTheChat.action.started += OnChatOpen;
         }
     }
 
@@ -28,14 +33,17 @@ public class ChatManagerNetwork : NetworkBehaviour
             SendChatMessage(chatInput.text);
             chatInput.text = "";
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.T) && toggle)
+    public void OnChatOpen(InputAction.CallbackContext context)
+    {
+        if (toggle)
         {
             Cursor.lockState = CursorLockMode.Confined;
             TextChatHUD.SetActive(true);
             toggle = false;
         }
-        else if (!toggle && Input.GetKeyDown(KeyCode.T))
+        else
         {
             Cursor.lockState = CursorLockMode.Locked;
             TextChatHUD.SetActive(false);
@@ -61,7 +69,7 @@ public class ChatManagerNetwork : NetworkBehaviour
     {
         var clientId = serverRpcParams.Receive.SenderClientId;
         var tempName = "Player" + clientId;
-        
+
         ReceiveChatMessageClientRpc(tempName + message);
     }
 
