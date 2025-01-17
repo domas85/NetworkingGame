@@ -2096,7 +2096,7 @@ GameObject:
   - component: {fileID: 2504922540766906360}
   - component: {fileID: 9089870683081835215}
   - component: {fileID: -6282513109617703558}
-  - component: {fileID: 1504970945155507751}
+  - component: {fileID: -7001694062515759379}
   m_Layer: 8
   m_Name: PlayerArmature_Networked
   m_TagString: Player
@@ -2274,6 +2274,8 @@ MonoBehaviour:
   cameraAngles: {x: 0, y: 0, z: 0}
   jump: 0
   sprint: 0
+  interact: 0
+  openChat: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
@@ -2421,7 +2423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
---- !u!114 &1504970945155507751
+--- !u!114 &-7001694062515759379
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
